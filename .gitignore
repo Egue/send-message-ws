@@ -7,3 +7,7 @@ coverage/
 .npm
 .vscode
 .nyc_output
+
+bot_sessions
+*.log
+*.png
