@@ -1,11 +1,11 @@
 
-import { Body, Controller, Get,Post, Res } from "@nestjs/common";
+import { Body, Controller, Get,Post, Res, Header } from "@nestjs/common";
 import {BaileysProvider } from '@bot-whatsapp/provider-baileys';
 import {MemoryDB , createBot, createFlow, createProvider} from '@bot-whatsapp/bot';
 
 import { SendMs } from "../dto/send-ms.dto";
-import path from "path";
-import fs from "fs";
+import path , {join} from "path";
+import fs, { createReadStream } from "fs";
 import { Response } from "express";
 
 @Controller("ws")
@@ -32,22 +32,11 @@ export class WsController{
     }
 
     @Get("/img")
-    async getImage(@Res() res:Response){
-        const imagePath = path.resolve('bot.qr.png');
-        const imageExist = fs.existsSync(imagePath);
-
-        if(!imageExist)
-        {
-            return res.status(404).send('Image not found');
-        }
-        /*const {size} = fs.statSync(imagePath);
-        res.writeHead(200,{
-            'Content-Type' : 'image/png',
-            'Content-Length' : size,
-            'Content-Disposition':`attachment; filename='qr.png'`
-        });
-        fs.createReadStream(imagePath).pipe(res);*/
-        return res.send(imagePath);//res.sendFile(imagePath , {root:'./'});
+    @Header('Content-Type' , 'image/png')
+    async getImage(){
+        const PATH = join(process.cwd() , 'bot.qr.png');
+        const fileSystem = createReadStream(PATH);
+        return fileSystem;
     }
     
 }
