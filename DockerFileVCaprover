@@ -4,6 +4,6 @@ ENV DIR /app
 WORKDIR $DIR
 
 COPY . .
-
+RUN npm i
 
 CMD ["npm", "run", "dev"]
