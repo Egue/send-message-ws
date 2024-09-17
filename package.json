@@ -46,6 +46,7 @@
     "@nestjs/platform-fastify": "^10.3.3",
     "axios": "^1.6.8",
     "express": "^4.18.2",
+    "nestjs-service-template": "file:",
     "reflect-metadata": "^0.2.1",
     "rxjs": "^7.8.1"
   },

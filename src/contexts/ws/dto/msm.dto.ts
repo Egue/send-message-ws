@@ -1,9 +1,9 @@
 export class MsM {
-    Account!: string;
-    ApiKey!:string;
+    account!: string;
+    apiKey!:string;
     toNumber!:string;
     sms!: string;
     flash!: string;
-    
+    token!:string;
 
 }

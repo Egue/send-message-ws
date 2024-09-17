@@ -13,15 +13,15 @@ export class MsmController {
                 const headers ={
                     'Content-Type':'application/json',
                     'Accept' :'application/json',
-                    'Account' : sms.Account,
-                    'ApiKey' : sms.ApiKey,
-                    'Token' : 'bdd22b5c072f7feac697e8828e58b08b'
+                    'Account' : sms.account,
+                    'ApiKey' : sms.apiKey,
+                    'Token' : sms.token
                 };
                 const data = {
                     toNumber : sms.toNumber,
                     sms : sms.sms,
                     flash : sms.flash,
-                    sc : "890202",
+                    sc : "890030",
                     request_dlvr_rcpt : "0"
                 }
                 const response = await axios.post(url ,data, {headers} );
