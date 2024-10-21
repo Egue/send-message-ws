@@ -1,23 +1,27 @@
 
 import { Body, Controller, Get,Post, Res, Header } from "@nestjs/common";
 import {BaileysProvider } from '@bot-whatsapp/provider-baileys';
-import {MemoryDB , createBot, createFlow, createProvider} from '@bot-whatsapp/bot';
+import {MemoryDB , addKeyword, createBot, createFlow, createProvider} from '@bot-whatsapp/bot';
 
 import { SendMs } from "../dto/send-ms.dto";
 import path , {join} from "path";
 import fs, { createReadStream } from "fs";
 import { Response } from "express";
+import { Saludo } from "../dto/saludo";
 
 @Controller("ws")
 export class WsController{
-    
+
     private provider = createProvider(BaileysProvider);
+
+    private saludo = new Saludo();
+
 
     @Get()
     async run(){
 
         await createBot({
-            flow: createFlow([]),
+            flow: createFlow([this.saludo.mensajeSaludo]),
             database:new MemoryDB(),
             provider : this.provider
         });
@@ -38,5 +42,5 @@ export class WsController{
         const fileSystem = createReadStream(PATH);
         return fileSystem;
     }
-    
+
 }
