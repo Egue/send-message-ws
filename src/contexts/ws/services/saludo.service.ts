@@ -1,43 +1,50 @@
 import { addKeyword, EVENTS } from "@bot-whatsapp/bot";
-import { Menu } from "../dto/menu.dto";
+import { Menus } from "../dto/menus.dto";
 import { FacturaService } from "./factura.service";
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
+import { SaludoInicial } from "../dto/saludoInicial";
+import { Enlaces } from "../dto/enlaces";
+import { DigitaEscribe } from "../dto/digitaEscribe";
 
 @Injectable()
 export class SaludoService {
-  public menu: Menu = new Menu();
+  private menu: Menus = new Menus();
+  private digita: DigitaEscribe = new DigitaEscribe();
+  private saludo: SaludoInicial = new SaludoInicial();
+  private enlaces: Enlaces = new Enlaces();
 
   constructor(private readonly factura: FacturaService) {}
 
   public flujoMensajeSaludo = addKeyword(EVENTS.WELCOME)
-    .addAnswer("Bienvenid@ a *Cable y TV Yopal*, internet sin limites")
+    .addAnswer(this.saludo.get())
+    .addAnswer([
+      `Ahora puedes descargar tu factura ingresando a: ${this.enlaces.getPortalClientes()}`,
+    ])
     .addAnswer(
-      "Ahora puedes descargar tu factura ingresando a: https://portalweb.server.cableytv.com/#/login",
-    )
-    .addAnswer(
-      this.menu.get(),
-      { capture: true },
-      async (ctx, { flowDynamic, gotoFlow }) => {
+      [this.digita.getDigitaNumero(), this.menu.getMenuIncio()],
+      { capture: true, delay: 2000},
+      async (ctx, { flowDynamic, gotoFlow, fallBack }) => {
         const option = ctx.body.trim();
-        console.log("Digito opcion: ", option);
+        console.log("Digitó opción: ", option);
         switch (option) {
           case "1":
             await gotoFlow(this.factura.flujoFactura);
+            console.log("Dirigiendose al Portal o PSE")
             break;
           case "2":
-            await flowDynamic(
-              "Aquí tienes la información sobre nuestros productos...",
-            );
+            await flowDynamic(this.menu.getMenuCartera());
             break;
           case "3":
-            await flowDynamic(
-              "Estamos conectándote con un agente. Por favor, espera...",
-            );
+            await flowDynamic(this.menu.getMenuMesaAyuda());
+            break;
+          case "4":
+            await flowDynamic(this.menu.getMenuVentas());
+            break;
+          case "5":
+            await flowDynamic(this.menu.getMenuPQR());
             break;
           default:
-            await flowDynamic(
-              "Opción no válida. Por favor, selecciona 1, 2 o 3.",
-            );
+            ["Opcion no valida: \n", fallBack()];
             break;
         }
       },

@@ -4,8 +4,9 @@ import { WsController } from "./api/ws.controller";
 import { MsmController } from "./api/msm.controller";
 import { SaludoService } from "./services/saludo.service";
 import { FacturaService } from "./services/factura.service";
+import { MenuPortalService } from "./services/menuPortal.service";
 @Module({
     controllers:[WsController,MsmController],
-    providers:[SaludoService, FacturaService]
+    providers:[SaludoService, FacturaService, MenuPortalService]
 })
 export class WsModule{}

@@ -8,19 +8,23 @@ import fs, { createReadStream } from "fs";
 import { Response } from "express";
 import { SaludoService } from "../services/saludo.service";
 import { FacturaService } from "../services/factura.service";
+import { MenuPortalService } from "../services/menuPortal.service";
 
 @Controller("ws")
 export class WsController{
 
     private provider = createProvider(BaileysProvider);
 
-    constructor(private readonly saludo: SaludoService, private readonly factura: FacturaService){}
+    constructor(private readonly saludo: SaludoService, private readonly factura: FacturaService,
+      private portal: MenuPortalService){}
 
     @Get()
     async run(){
 
         await createBot({
-            flow: createFlow([this.saludo.flujoMensajeSaludo, this.factura.flujoFactura]),
+            flow: createFlow(
+              [this.saludo.flujoMensajeSaludo, this.factura.flujoFactura, this.portal.flujoMenoPortal]
+            ),
             database:new MemoryDB(),
             provider : this.provider
         });

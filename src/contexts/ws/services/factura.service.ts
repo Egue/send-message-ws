@@ -1,31 +1,34 @@
-import { addAnswer, addKeyword } from "@bot-whatsapp/bot";
-import { InfoFactura } from "../dto/infoFactura.dto";
-import { InfoUser } from "../dto/infoUser.dto";
-import { Agente } from "../dto/agente.dto";
-import { SaludoService } from "./saludo.service";
-import { forwardRef, Inject, Injectable } from "@nestjs/common";
+import { addKeyword } from "@bot-whatsapp/bot";
+import { Injectable } from "@nestjs/common";
+import { MenuPortalService } from "./menuPortal.service";
+import { Menus } from "../dto/menus.dto";
 
 @Injectable()
 export class FacturaService {
-  public infoFac: InfoFactura = new InfoFactura();
-  public infoUser: InfoUser = new InfoUser();
-  public agente: Agente = new Agente();
+  private menu: Menus = new Menus();
+
+  constructor(private readonly menuPortal: MenuPortalService) {}
 
   public flujoFactura = addKeyword("1")
-    .addAnswer("Elige la opción según sea tu caso: ")
     .addAnswer(
-      this.infoFac.get(),
-      { capture: true },
-      async (ctx, { flowDynamic, fallBack }) => {
-        const opcion = ctx.body.trim().toUpperCase();
-        console.log("Opción ingresada:", opcion);
-        if (["A", "B", "C", "D"].includes(opcion)) {
-          console.log("Respuesta válida, mostrando información.");
-          await flowDynamic([this.infoUser.get(), this.agente.get()]);
-        } else {
-          console.log("Opción no válida, ejecutando fallBack.");
-          return fallBack();
+      `Escribe la palabra clave, según sea tu caso: \n${this.menu.getPortalOPagar()}`,
+      { capture: true, delay:1000 },
+      async (ctx, { gotoFlow, fallBack, flowDynamic }) => {
+        const opcion = ctx.body.trim().toLowerCase();
+        console.log(`Cliente digito: ${opcion}`);
+        switch (opcion) {
+          case "portal":
+            await gotoFlow(this.menuPortal.flujoMenoPortal);
+            console.log("Dirigiendose al Portal Clientes")
+            break;
+          case "pagar":
+            await flowDynamic(this.menu.getPedirDatos());
+            break;
+          default:
+            await flowDynamic("Opcion no valida: ");
+            return fallBack();
         }
       },
+
     );
 }
