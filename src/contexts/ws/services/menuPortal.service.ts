@@ -18,6 +18,7 @@ export class MenuPortalService {
     { capture: true },
     async (ctx, { flowDynamic, fallBack}) => {
       const opcion = ctx.body.trim().toLowerCase();
+      try{
       switch(opcion){
         case "factura":
           await flowDynamic(['Estimado usuari@ a continuacion encontrará una *play list informativa* para que pueda enviar su factura al correo:',this.enlace.getPlayListPortal()]);
@@ -34,6 +35,9 @@ export class MenuPortalService {
           default:
           await flowDynamic("Opcion no valida: ");
           return fallBack();
+      }}catch (error) {
+        console.error("Error en el flujo de Menu Portal", error);
+        await flowDynamic("Ha ocurrido un error");
       }
     },
   );

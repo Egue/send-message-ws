@@ -22,30 +22,35 @@ export class SaludoService {
     ])
     .addAnswer(
       [this.digita.getDigitaNumero(), this.menu.getMenuIncio()],
-      { capture: true, delay: 2000},
+      { capture: true, delay: 2000 },
       async (ctx, { flowDynamic, gotoFlow, fallBack }) => {
         const option = ctx.body.trim();
         console.log("Digitó opción: ", option);
-        switch (option) {
-          case "1":
-            await gotoFlow(this.factura.flujoFactura);
-            console.log("Dirigiendose al Portal o PSE")
-            break;
-          case "2":
-            await flowDynamic(this.menu.getMenuCartera());
-            break;
-          case "3":
-            await flowDynamic(this.menu.getMenuMesaAyuda());
-            break;
-          case "4":
-            await flowDynamic(this.menu.getMenuVentas());
-            break;
-          case "5":
-            await flowDynamic(this.menu.getMenuPQR());
-            break;
-          default:
-            ["Opcion no valida: \n", fallBack()];
-            break;
+        try {
+          switch (option) {
+            case "1":
+              await gotoFlow(this.factura.flujoFactura);
+              console.log("Dirigiendose al Portal o PSE");
+              break;
+            case "2":
+              await flowDynamic(this.menu.getMenuCartera());
+              break;
+            case "3":
+              await flowDynamic(this.menu.getMenuMesaAyuda());
+              break;
+            case "4":
+              await flowDynamic(this.menu.getMenuVentas());
+              break;
+            case "5":
+              await flowDynamic(this.menu.getMenuPQR());
+              break;
+            default:
+              await flowDynamic("Opcion no valida: \n");
+              return fallBack();
+          }
+        } catch (error) {
+          console.error("Error en el flujo de saludo", error);
+          await flowDynamic("Ha ocurrido un error");
         }
       },
     );

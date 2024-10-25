@@ -16,6 +16,7 @@ export class FacturaService {
       async (ctx, { gotoFlow, fallBack, flowDynamic }) => {
         const opcion = ctx.body.trim().toLowerCase();
         console.log(`Cliente digito: ${opcion}`);
+        try{
         switch (opcion) {
           case "portal":
             await gotoFlow(this.menuPortal.flujoMenoPortal);
@@ -27,6 +28,9 @@ export class FacturaService {
           default:
             await flowDynamic("Opcion no valida: ");
             return fallBack();
+        }}catch (error) {
+          console.error("Error en el flujo de PORTAL o PAGAR", error);
+          await flowDynamic("Ha ocurrido un error");
         }
       },
 
