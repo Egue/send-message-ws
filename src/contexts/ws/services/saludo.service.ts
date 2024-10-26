@@ -2,7 +2,7 @@ import { addKeyword, EVENTS } from "@bot-whatsapp/bot";
 import { Menus } from "../dto/menus.dto";
 import { FacturaService } from "./factura.service";
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
-import { SaludoInicial } from "../dto/saludoInicial";
+import { Bienvenida } from "../dto/bienvenida";
 import { Enlaces } from "../dto/enlaces";
 import { DigitaEscribe } from "../dto/digitaEscribe";
 
@@ -10,19 +10,22 @@ import { DigitaEscribe } from "../dto/digitaEscribe";
 export class SaludoService {
   private menu: Menus = new Menus();
   private digita: DigitaEscribe = new DigitaEscribe();
-  private saludo: SaludoInicial = new SaludoInicial();
+  private bienvenida: Bienvenida = new Bienvenida();
   private enlaces: Enlaces = new Enlaces();
 
   constructor(private readonly factura: FacturaService) {}
 
-  public flujoMensajeSaludo = addKeyword(EVENTS.WELCOME)
-    .addAnswer(this.saludo.get())
-    .addAnswer([
-      `Ahora puedes descargar tu factura ingresando a: ${this.enlaces.getPortalClientes()}`,
-    ])
+  public flujoMensajeSaludo = addKeyword(["Hola", "buena tarde", "buenas tardes", "buen dia", "buenos dias","Hola buena tarde", "hola buenas tardes", "buena noche", "buenas noches", "¿como estas?","¿como esta?", "disculpe", "disculpa", "buen día", "buenos días", "¿como estás?","¿como está?"])
+    .addAnswer(this.bienvenida.get())
+    .addAnswer(
+      [
+        `Ahora puedes descargar tu factura ingresando a: ${this.enlaces.getPortalClientes()}`,
+      ],
+      { delay: 2000 },
+    )
     .addAnswer(
       [this.digita.getDigitaNumero(), this.menu.getMenuIncio()],
-      { capture: true, delay: 2000 },
+      { capture: true, delay: 3000 },
       async (ctx, { flowDynamic, gotoFlow, fallBack }) => {
         const option = ctx.body.trim();
         console.log("Digitó opción: ", option);

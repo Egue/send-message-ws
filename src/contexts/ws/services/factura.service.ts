@@ -7,9 +7,10 @@ import { Menus } from "../dto/menus.dto";
 export class FacturaService {
   private menu: Menus = new Menus();
 
+
   constructor(private readonly menuPortal: MenuPortalService) {}
 
-  public flujoFactura = addKeyword("1")
+  public flujoFactura = addKeyword("1", {sensitive:true})
     .addAnswer(
       `Escribe la palabra clave, según sea tu caso: \n${this.menu.getPortalOPagar()}`,
       { capture: true, delay:1000 },
