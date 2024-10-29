@@ -5,8 +5,10 @@ import { MsmController } from "./api/msm.controller";
 import { SaludoService } from "./services/saludo.service";
 import { FacturaService } from "./services/factura.service";
 import { MenuPortalService } from "./services/menuPortal.service";
+import { VolverIncio } from "./services/volverInicio.service";
+import { VolverFacturaService } from "./services/volverFactura.service";
 @Module({
     controllers:[WsController,MsmController],
-    providers:[SaludoService, FacturaService, MenuPortalService]
+    providers:[SaludoService, FacturaService, MenuPortalService, VolverIncio, VolverFacturaService]
 })
 export class WsModule{}

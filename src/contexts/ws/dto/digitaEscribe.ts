@@ -1,9 +1,9 @@
 export class DigitaEscribe{
 
-  private digitaNumero: string = 'Por favor, digita el número de la opción, según tu petición:';
-  private seleccionUno: string = 'Escribe la palabra clave, según sea tu caso:\n';
+  private digitaNumero: string = '😎Escribe el número de la opción para ayudarte:';
+  private seleccionUno: string = 'Digita la palabra clave🔑 adecuada a tu caso:\n';
 
-  private seleccionPortal: string = 'Estamos a un paso de dar solucion a tu peticion 🥳🥳 \nEscribe la palabra clave, para conocer un poco más tu solicitud'
+  private seleccionPortal: string = 'Estamos a un paso de dar solución a tu petición🥳 \nEscribe la palabra clave🔑 para conocer un poco más tu solicitud'
 
   constructor(){};
 

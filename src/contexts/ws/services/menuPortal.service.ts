@@ -13,31 +13,36 @@ export class MenuPortalService {
 
   constructor() {}
 
-  public flujoMenoPortal = addKeyword("portal").addAnswer(
+  public flujoMenuPortal = addKeyword("portal").addAnswer(
     `${this.digitar.getseleccionPortal()} \n ${this.menu.getMenuPortal()}`,
     { capture: true },
-    async (ctx, { flowDynamic, fallBack}) => {
+    async (ctx, {flowDynamic, endFlow}) => {
       const opcion = ctx.body.trim().toLowerCase();
       try{
       switch(opcion){
-        case "factura":
-          await flowDynamic(['Estimado usuari@ a continuacion encontrará una *play list informativa* para que pueda enviar su factura al correo:',this.enlace.getPlayListPortal()]);
-          break;
-          case "codigo":
-          await flowDynamic(this.menu.getPedirDatos());
+        case "enviar":
+          await flowDynamic("Estimado usuari@ a continuación encontrarás una *play list informativa* para que puedas enviar tu factura al correo 👇");
+          await flowDynamic(this.enlace.getPlayListPortal(), {delay:3000})
+          await flowDynamic("Estaré siempre atento a tus ordenes🤗\nSi deseas volver al menú princicipal, escribe *menu*",{delay:10000})
+          return endFlow();
+          case "codigo": case "código":
+            await flowDynamic(this.menu.getPedirDatos());
+            await flowDynamic( this.menu.getFuncionarioIN(), {delay:2000});
           break;
           case "correo":
-          await flowDynamic(this.menu.getPedirDatos());
+            await flowDynamic(this.menu.getPedirDatos());
+            await flowDynamic( this.menu.getFuncionarioIN(), {delay:2000});
           break;
           case "otro":
-          await flowDynamic(this.menu.getPedirDatos());
+            await flowDynamic(this.menu.getPedirDatos());
+            await flowDynamic( this.menu.getFuncionarioIN(), {delay:2000});
           break;
           default:
-          await flowDynamic("Opcion no valida: ");
-          return fallBack();
+            await flowDynamic("🤓No entendí lo que escribiste.\nPara regresar al menú anterior, escribe *portal*\nPara volver al menú principal, escribe *menu*");
+          break;
       }}catch (error) {
         console.error("Error en el flujo de Menu Portal", error);
-        await flowDynamic("Ha ocurrido un error");
+        await flowDynamic("🥺 Disculpa, he tenido inconvenientes procesando tu solicitud\n_*en un momento te atenderá un funcionario IN*_");
       }
     },
   );
