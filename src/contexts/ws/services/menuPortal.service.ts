@@ -21,7 +21,7 @@ export class MenuPortalService {
       try{
       switch(opcion){
         case "enviar":
-          await flowDynamic("Estimado usuari@ a continuación encontrará una *play list informativa* para que pueda enviar su factura al correo 👇");
+          await flowDynamic("Estimado usuari@ a continuación encontrarás una *play list informativa* para que puedas enviar tu factura al correo 👇");
           await flowDynamic(this.enlace.getPlayListPortal(), {delay:3000})
           await flowDynamic("Estaré siempre atento a tus ordenes🤗\nSi deseas volver al menú princicipal, escribe *menu*",{delay:10000})
           return endFlow();
@@ -42,7 +42,7 @@ export class MenuPortalService {
           break;
       }}catch (error) {
         console.error("Error en el flujo de Menu Portal", error);
-        await flowDynamic("Ha ocurrido un error");
+        await flowDynamic("🥺 Disculpa, he tenido inconvenientes procesando tu solicitud\n_*en un momento te atenderá un funcionario IN*_");
       }
     },
   );

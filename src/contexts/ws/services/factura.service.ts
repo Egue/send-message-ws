@@ -16,7 +16,7 @@ export class FacturaService {
       { capture: true, delay:1000 },
       async (ctx, { gotoFlow, endFlow, flowDynamic }) => {
         const opcion = ctx.body.trim().toLowerCase();
-        console.log(`Cliente digito: ${opcion}`);
+        console.log(`Cliente digitó: ${opcion}`);
         try{
         switch (opcion) {
           case "portal":
@@ -32,7 +32,7 @@ export class FacturaService {
             return endFlow();
         }}catch (error) {
           console.error("Error en el flujo de PORTAL o PAGAR", error);
-          await flowDynamic("Ha ocurrido un error");
+          await flowDynamic("🥺 Disculpa, he tenido inconvenientes procesando tu solicitud\n_*en un momento te atenderá un funcionario IN*_");
         }
       },
 

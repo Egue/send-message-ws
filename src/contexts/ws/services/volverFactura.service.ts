@@ -32,7 +32,7 @@ export class VolverFacturaService {
             break;
         }}catch (error) {
           console.error("Error en el flujo de PORTAL o PAGAR", error);
-          await flowDynamic("Ha ocurrido un error");
+          await flowDynamic("🥺 Disculpa, he tenido inconvenientes procesando tu solicitud\n_*en un momento te atenderá un funcionario IN*_");
         }
       },
 

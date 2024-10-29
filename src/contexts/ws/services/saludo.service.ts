@@ -58,7 +58,7 @@ export class SaludoService {
           }
         } catch (error) {
           console.error("Error en el flujo de saludo", error);
-          await flowDynamic("Ha ocurrido un error");
+          await flowDynamic("🥺 Disculpa, he tenido inconvenientes procesando tu solicitud\n_*en un momento te atenderá un funcionario IN*_");
         }
       },
     );
